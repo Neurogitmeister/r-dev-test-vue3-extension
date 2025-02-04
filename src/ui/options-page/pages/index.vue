@@ -21,7 +21,7 @@ const { isDark, profile, others } = storeToRefs(optionsStore)
     <p>Change application interface settings.</p>
 
     <div class="form-control">
-      <label>Enabel Dark Theme</label>
+      <label>Enable Dark Theme</label>
       <input
         v-model="isDark"
         type="checkbox"
