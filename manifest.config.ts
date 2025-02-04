@@ -45,7 +45,12 @@ export default {
   offline_enabled: true,
   host_permissions: [],
   permissions: ["storage", "tabs", "background", "sidePanel"],
-  web_accessible_resources: [],
+  web_accessible_resources: [
+    {
+      resources: ["src/ui/content-script-iframe/index.html"],
+      matches: ["<all_urls>"],
+    },
+  ],
   icons: {
     16: "src/assets/logo.png",
     24: "src/assets/logo.png",
