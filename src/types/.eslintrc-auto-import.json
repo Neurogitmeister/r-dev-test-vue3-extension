@@ -362,6 +362,17 @@
     "usePreferredReducedTransparency": true,
     "useSSRWidth": true,
     "onElementRemoval": true,
-    "useCountdown": true
+    "useCountdown": true,
+    "Getter": true,
+    "Remover": true,
+    "Setter": true,
+    "StorageArea": true,
+    "StorageAreaApi": true,
+    "StorageDataType": true,
+    "StorageKeyType": true,
+    "StorageUpdate": true,
+    "clearAllStorage": true,
+    "createStorage": true,
+    "migrateStorage": true
   }
 }
