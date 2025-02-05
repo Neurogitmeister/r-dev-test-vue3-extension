@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Devtools Panel Playground</h1>
-    <TestComponent />
+    <StoresList />
   </div>
 </template>
 

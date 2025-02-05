@@ -138,10 +138,10 @@ const features = ref([
 
     <div class="flex justify-center">
       <RouterLink
-        to="/common/account/login"
+        to="/action-popup/stores"
         class="btn btn-secondary btn-xl w-full md:max-w-96"
       >
-        Get Started Now
+        Show Stores Now
       </RouterLink>
     </div>
   </div>

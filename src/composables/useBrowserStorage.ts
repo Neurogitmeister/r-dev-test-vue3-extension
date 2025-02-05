@@ -1,4 +1,21 @@
 import { ref, watch, nextTick } from "vue"
+import { ILocalStorage, ISyncStorage } from "@/utils/storage"
+
+function isObject(value: unknown): boolean {
+  return value !== null && value instanceof Object && !Array.isArray(value)
+}
+
+function checkType(defaultValue: unknown, value: unknown): boolean {
+  // Check if the value type is the same type as the default value or null
+  // there are only strings, booleans, nulls and arrays as types left
+  return (
+    (typeof value === typeof defaultValue &&
+      Array.isArray(value) == Array.isArray(defaultValue)) ||
+    value === null
+  )
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mergeDeep(defaults: any, source: any): any {
   // Merge the default options with the stored options
   const output = { ...defaults } // Start with defaults
@@ -15,48 +32,32 @@ function mergeDeep(defaults: any, source: any): any {
     } else {
       // If the type is different, use the default value
       output[key] = defaultValue
-      console.log("Type mismatch", key, sourceValue)
+      console.info("Type mismatch", key, sourceValue)
     }
   })
 
   return output
 }
 
-function checkType(defaultValue: any, value: any): boolean {
-  // Check if the value type is the same type as the default value or null
-  // there are only strings, booleans, nulls and arrays as types left
-  return (
-    (typeof value === typeof defaultValue &&
-      Array.isArray(value) == Array.isArray(defaultValue)) ||
-    value === null
-  )
-}
-function isObject(value: any): boolean {
-  return value !== null && value instanceof Object && !Array.isArray(value)
-}
-
-export function useBrowserSyncStorage<T>(key: string, defaultValue: T) {
-  return useBrowserStorage(key, defaultValue, "sync")
-}
-
-export function useBrowserLocalStorage<T>(key: string, defaultValue: T) {
-  return useBrowserStorage(key, defaultValue, "local")
-}
-
-function useBrowserStorage<T>(
-  key: string,
-  defaultValue: T,
-  storageType: "sync" | "local" = "sync",
+function useBrowserStorage<
+  S,
+  K extends string & keyof S,
+  D extends NonNullable<S[K]> | undefined,
+>(
+  key: K,
+  defaultValue?: D,
+  storageType: "local" | "sync" | "session" = "local",
 ) {
-  const data = ref<T>(defaultValue)
+  type WithDefault<T> = D extends undefined ? T : NonNullable<T>
+
+  const data = ref(defaultValue as WithDefault<S[K]>)
   // Blocking setting storage if it is updating from storage
   let isUpdatingFromStorage = true
-  const defaultIsObject = isObject(defaultValue)
   // Initialize storage with the value from chrome.storage
   const promise = new Promise((resolve) => {
     chrome.storage[storageType].get(key, async (result) => {
       if (result?.[key] !== undefined) {
-        if (defaultIsObject && isObject(result[key])) {
+        if (isObject(defaultValue) && isObject(result[key])) {
           data.value = mergeDeep(defaultValue, result[key])
         } else if (checkType(defaultValue, result[key])) {
           data.value = result[key]
@@ -93,4 +94,18 @@ function useBrowserStorage<T>(
     }
   })
   return { data, promise }
+}
+
+export function useBrowserSyncStorage<
+  K extends string & keyof ISyncStorage,
+  D extends NonNullable<ISyncStorage[K]> | undefined,
+>(key: K, defaultValue: D) {
+  return useBrowserStorage<ISyncStorage, K, D>(key, defaultValue, "sync")
+}
+
+export function useBrowserLocalStorage<
+  K extends string & keyof ILocalStorage,
+  D extends NonNullable<ILocalStorage[K]> | undefined,
+>(key: K, defaultValue?: D) {
+  return useBrowserStorage<ILocalStorage, K, D>(key, defaultValue, "local")
 }

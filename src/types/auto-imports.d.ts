@@ -136,6 +136,7 @@ declare global {
   const signInWithEmail: typeof import('../utils/auth')['signInWithEmail']
   const signInWithGoogle: typeof import('../utils/auth')['signInWithGoogle']
   const signOut: typeof import('../utils/auth')['signOut']
+  const storage: typeof import('../utils/storage/index')['storage']
   const storeToRefs: typeof import('pinia')['storeToRefs']
   const stripe: typeof import('../utils/payment/stripe')['stripe']
   const supabase: typeof import('../utils/supabase/supabase')['supabase']
@@ -187,6 +188,7 @@ declare global {
   const useBroadcastChannel: typeof import('@vueuse/core')['useBroadcastChannel']
   const useBrowserLocalStorage: typeof import('../composables/useBrowserStorage')['useBrowserLocalStorage']
   const useBrowserLocation: typeof import('@vueuse/core')['useBrowserLocation']
+  const useBrowserSessionStorage: typeof import('../composables/useBrowserStorage')['useBrowserSessionStorage']
   const useBrowserSyncStorage: typeof import('../composables/useBrowserStorage')['useBrowserSyncStorage']
   const useCached: typeof import('@vueuse/core')['useCached']
   const useCheckout: typeof import('../utils/payment/stripe')['useCheckout']
@@ -254,6 +256,7 @@ declare global {
   const useMediaQuery: typeof import('@vueuse/core')['useMediaQuery']
   const useMemoize: typeof import('@vueuse/core')['useMemoize']
   const useMemory: typeof import('@vueuse/core')['useMemory']
+  const useMerchantsStore: typeof import('../stores/merchants.store')['useMerchantsStore']
   const useModel: typeof import('vue')['useModel']
   const useMounted: typeof import('@vueuse/core')['useMounted']
   const useMouse: typeof import('@vueuse/core')['useMouse']
@@ -365,7 +368,10 @@ declare global {
   export type { Component, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
-  export type { StorageDataType, StorageKeyType, StorageArea, StorageUpdate, Getter, Setter, Remover, StorageAreaApi } from '../utils/storage/storage-types.d'
+  export type { ILocalStorage, ISessionStorage, ISyncStorage, Merchant, MerchantState } from '../utils/storage/index'
+  import('../utils/storage/index')
+  // @ts-ignore
+  export type { StorageDataType, StorageKeyType, StorageArea, StorageUpdate, StorageGetter, StorageSetter, StorageRemover, StorageAreaApi } from '../utils/storage/storage-types.d'
   import('../utils/storage/storage-types.d')
 }
 
@@ -481,6 +487,7 @@ declare module 'vue' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly storage: UnwrapRef<typeof import('../utils/storage/index')['storage']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
@@ -526,6 +533,7 @@ declare module 'vue' {
     readonly useBroadcastChannel: UnwrapRef<typeof import('@vueuse/core')['useBroadcastChannel']>
     readonly useBrowserLocalStorage: UnwrapRef<typeof import('../composables/useBrowserStorage')['useBrowserLocalStorage']>
     readonly useBrowserLocation: UnwrapRef<typeof import('@vueuse/core')['useBrowserLocation']>
+    readonly useBrowserSessionStorage: UnwrapRef<typeof import('../composables/useBrowserStorage')['useBrowserSessionStorage']>
     readonly useBrowserSyncStorage: UnwrapRef<typeof import('../composables/useBrowserStorage')['useBrowserSyncStorage']>
     readonly useCached: UnwrapRef<typeof import('@vueuse/core')['useCached']>
     readonly useClipboard: UnwrapRef<typeof import('@vueuse/core')['useClipboard']>
@@ -591,6 +599,7 @@ declare module 'vue' {
     readonly useMediaQuery: UnwrapRef<typeof import('@vueuse/core')['useMediaQuery']>
     readonly useMemoize: UnwrapRef<typeof import('@vueuse/core')['useMemoize']>
     readonly useMemory: UnwrapRef<typeof import('@vueuse/core')['useMemory']>
+    readonly useMerchantsStore: UnwrapRef<typeof import('../stores/merchants.store')['useMerchantsStore']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
     readonly useMounted: UnwrapRef<typeof import('@vueuse/core')['useMounted']>
     readonly useMouse: UnwrapRef<typeof import('@vueuse/core')['useMouse']>
@@ -644,7 +653,6 @@ declare module 'vue' {
     readonly useSwipe: UnwrapRef<typeof import('@vueuse/core')['useSwipe']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
     readonly useTemplateRefsList: UnwrapRef<typeof import('@vueuse/core')['useTemplateRefsList']>
-    readonly useTestStore: UnwrapRef<typeof import('../stores/test.store')['useTestStore']>
     readonly useTextDirection: UnwrapRef<typeof import('@vueuse/core')['useTextDirection']>
     readonly useTextSelection: UnwrapRef<typeof import('@vueuse/core')['useTextSelection']>
     readonly useTextareaAutosize: UnwrapRef<typeof import('@vueuse/core')['useTextareaAutosize']>

@@ -15,9 +15,7 @@ declare module 'vue' {
     IPhGear: typeof import('~icons/ph/gear')['default']
     IPhGlobe: typeof import('~icons/ph/globe')['default']
     IPhListHeart: typeof import('~icons/ph/list-heart')['default']
-    IPhMinus: typeof import('~icons/ph/minus')['default']
     IPhMoon: typeof import('~icons/ph/moon')['default']
-    IPhPlus: typeof import('~icons/ph/plus')['default']
     IPhPresentationChart: typeof import('~icons/ph/presentation-chart')['default']
     IPhQuestion: typeof import('~icons/ph/question')['default']
     IPhRocketLaunch: typeof import('~icons/ph/rocket-launch')['default']
@@ -27,8 +25,8 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterLinkUp: typeof import('./../components/RouterLinkUp.vue')['default']
     RouterView: typeof import('vue-router')['RouterView']
+    StoresList: typeof import('./../components/StoresList.vue')['default']
     TailwindEmptyState: typeof import('./../components/state/tailwind-empty-state.vue')['default']
-    TestComponent: typeof import('./../components/TestComponent.vue')['default']
     ThemeSwitch: typeof import('./../components/ThemeSwitch.vue')['default']
   }
 }

@@ -373,6 +373,17 @@
     "StorageUpdate": true,
     "clearAllStorage": true,
     "createStorage": true,
-    "migrateStorage": true
+    "migrateStorage": true,
+    "ILocalStorage": true,
+    "ISessionStorage": true,
+    "ISyncStorage": true,
+    "StorageGetter": true,
+    "StorageRemover": true,
+    "StorageSetter": true,
+    "storage": true,
+    "useBrowserSessionStorage": true,
+    "Merchant": true,
+    "MerchantState": true,
+    "useMerchantsStore": true
   }
 }

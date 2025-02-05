@@ -4,11 +4,10 @@ import { i18n } from "@/utils/i18n" // Adjust the import path according to your 
 
 export function useLocale() {
   const defaultLocale = "en"
-  const localeKey = "user-locale"
 
   // Use the useBrowserLocalStorage composable to persist the locale
-  const { data: currentLocale } = useBrowserLocalStorage<string>(
-    localeKey,
+  const { data: currentLocale } = useBrowserLocalStorage(
+    "userLocale",
     defaultLocale,
   )
 

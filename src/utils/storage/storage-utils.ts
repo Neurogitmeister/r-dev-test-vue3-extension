@@ -113,7 +113,7 @@ const createStorage = <T extends StorageDataType>(area: StorageArea) => ({
 const clearAllStorage = () =>
   Promise.all([
     chrome.storage.local.clear(),
-    // chrome.storage.sync.clear(),
+    chrome.storage.sync.clear(),
     chrome.storage.session.clear(),
   ])
 

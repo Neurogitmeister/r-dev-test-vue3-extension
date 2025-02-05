@@ -1,30 +1,9 @@
-import { onMessage } from "webext-bridge/background"
-
-onMessage("getTodo", async ({ data }) => {
-  try {
-    if (!data.id) return undefined
-    const res = await fetch(
-      `https://jsonplaceholder.typicode.com/todos/${data.id}`,
-      {
-        method: "GET",
-      },
-    )
-    return await res.json()
-  } catch (e) {
-    return undefined
-  }
-})
+import { APIMerchants } from "./api/merchants"
 
 chrome.runtime.onInstalled.addListener(async (opt) => {
-  // Check if reason is install or update. Eg: opt.reason === 'install' // If extension is installed.
-  // opt.reason === 'update' // If extension is updated.
   if (opt.reason === "install") {
-    await chrome.storage.local.clear()
-
     chrome.tabs.create({
       active: true,
-      // Open the setup page and append `?type=install` to the URL so frontend
-      // can know if we need to show the install page or update page.
       url: chrome.runtime.getURL("src/ui/setup/index.html#/setup/install"),
     })
   }
@@ -37,6 +16,14 @@ chrome.runtime.onInstalled.addListener(async (opt) => {
   }
 })
 
+const onInit = async () => {
+  await migrateStorage()
+  // await auth.init()
+  await APIMerchants.init()
+}
+
+onInit()
+
 self.onerror = function (message, source, lineno, colno, error) {
   console.info("Error: " + message)
   console.info("Source: " + source)
@@ -44,7 +31,5 @@ self.onerror = function (message, source, lineno, colno, error) {
   console.info("Column: " + colno)
   console.info("Error object: " + error)
 }
-
-console.info("hello world from background")
 
 export {}
