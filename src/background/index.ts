@@ -1,6 +1,19 @@
-// Sample code if using extensionpay.com
-// import { extPay } from '@/utils/payment/extPay'
-// extPay.startBackground()
+import { onMessage } from "webext-bridge/background"
+
+onMessage("getTodo", async ({ data }) => {
+  try {
+    if (!data.id) return undefined
+    const res = await fetch(
+      `https://jsonplaceholder.typicode.com/todos/${data.id}`,
+      {
+        method: "GET",
+      },
+    )
+    return await res.json()
+  } catch (e) {
+    return undefined
+  }
+})
 
 chrome.runtime.onInstalled.addListener(async (opt) => {
   // Check if reason is install or update. Eg: opt.reason === 'install' // If extension is installed.
