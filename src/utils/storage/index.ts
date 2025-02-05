@@ -8,17 +8,22 @@ interface Merchant {
 
 interface MerchantState {
   showNotification?: boolean
+  clicksCount?: number
 }
+
+type MerchantStatesMap = Map<Merchant["domain"], MerchantState>
 
 interface ILocalStorage {
   merchants?: Merchant[]
-  merchants_refetch_alarm_flag?: boolean
+  merchantStatesMap?: MerchantStatesMap
+  merchantsStorageState?: "loading" | "writing" | "retrying" | "error" | "ready"
+  merchantsRefetchAlarmFlag?: boolean
   userLocale?: string
   darkMode?: BasicColorSchema
 }
 
 interface ISessionStorage {
-  merchantStates?: Map<Merchant["domain"], MerchantState>
+  healthStatus?: boolean
 }
 
 interface ISyncStorage {
@@ -32,5 +37,5 @@ const storage = {
 }
 
 export type { ILocalStorage, ISessionStorage, ISyncStorage }
-export type { Merchant, MerchantState }
+export type { Merchant, MerchantState, MerchantStatesMap }
 export { storage }

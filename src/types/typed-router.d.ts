@@ -19,7 +19,7 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/action-popup/': RouteRecordInfo<'/action-popup/', '/action-popup', Record<never, never>, Record<never, never>>,
-    '/action-popup/stores': RouteRecordInfo<'/action-popup/stores', '/action-popup/stores', Record<never, never>, Record<never, never>>,
+    '/action-popup/all-pages': RouteRecordInfo<'/action-popup/all-pages', '/action-popup/all-pages', Record<never, never>, Record<never, never>>,
     '/common/404': RouteRecordInfo<'/common/404', '/common/404', Record<never, never>, Record<never, never>>,
     '/common/about': RouteRecordInfo<'/common/about', '/common/about', Record<never, never>, Record<never, never>>,
     '/common/change-log': RouteRecordInfo<'/common/change-log', '/common/change-log', Record<never, never>, Record<never, never>>,

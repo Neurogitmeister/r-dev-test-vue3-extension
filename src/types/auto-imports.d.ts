@@ -58,6 +58,7 @@ declare global {
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const getCustomerPortalLink: typeof import('../utils/firebase')['getCustomerPortalLink']
   const getProductsAndPrices: typeof import('../utils/firebase')['getProductsAndPrices']
+  const getSessionStorageStatus: typeof import('../utils/storage/storage-utils')['getSessionStorageStatus']
   const getSubscription: typeof import('../utils/firebase')['getSubscription']
   const h: typeof import('vue')['h']
   const i18n: typeof import('../utils/i18n')['i18n']
@@ -368,7 +369,7 @@ declare global {
   export type { Component, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
-  export type { ILocalStorage, ISessionStorage, ISyncStorage, Merchant, MerchantState } from '../utils/storage/index'
+  export type { ILocalStorage, ISessionStorage, ISyncStorage, Merchant, MerchantState, MerchantStatesMap } from '../utils/storage/index'
   import('../utils/storage/index')
   // @ts-ignore
   export type { StorageDataType, StorageKeyType, StorageArea, StorageUpdate, StorageGetter, StorageSetter, StorageRemover, StorageAreaApi } from '../utils/storage/storage-types.d'
@@ -533,7 +534,6 @@ declare module 'vue' {
     readonly useBroadcastChannel: UnwrapRef<typeof import('@vueuse/core')['useBroadcastChannel']>
     readonly useBrowserLocalStorage: UnwrapRef<typeof import('../composables/useBrowserStorage')['useBrowserLocalStorage']>
     readonly useBrowserLocation: UnwrapRef<typeof import('@vueuse/core')['useBrowserLocation']>
-    readonly useBrowserSessionStorage: UnwrapRef<typeof import('../composables/useBrowserStorage')['useBrowserSessionStorage']>
     readonly useBrowserSyncStorage: UnwrapRef<typeof import('../composables/useBrowserStorage')['useBrowserSyncStorage']>
     readonly useCached: UnwrapRef<typeof import('@vueuse/core')['useCached']>
     readonly useClipboard: UnwrapRef<typeof import('@vueuse/core')['useClipboard']>

@@ -384,6 +384,8 @@
     "useBrowserSessionStorage": true,
     "Merchant": true,
     "MerchantState": true,
-    "useMerchantsStore": true
+    "useMerchantsStore": true,
+    "getSessionStorageStatus": true,
+    "MerchantStatesMap": true
   }
 }

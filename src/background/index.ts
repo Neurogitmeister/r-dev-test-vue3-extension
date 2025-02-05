@@ -18,8 +18,9 @@ chrome.runtime.onInstalled.addListener(async (opt) => {
 
 const onInit = async () => {
   await migrateStorage()
-  // await auth.init()
+  // await auth.init() // - where JWT auth would start, if there was one
   await APIMerchants.init()
+  await storage.session.set("healthStatus", true)
 }
 
 onInit()
