@@ -2,6 +2,8 @@ export const SERP_CONFIG_NAMES = {
   yahoo: "yahoo",
   google: "google",
   bing: "bing",
+  duckduckgo: "duckduckgo",
+  yandex: "yandex",
 } as const
 
 export interface ISerpConfig {
@@ -39,5 +41,18 @@ export const serpConfigs: ISerpConfig[] = [
     selector: "div.g a:first-child",
     root: "h3",
     style: "padding-top: 20px",
+  },
+  {
+    name: SERP_CONFIG_NAMES.duckduckgo,
+    domain: "duckduckgo.com",
+    rx: /^http(?:s)?:\/\/(?:www\.)?duckduckgo\..+/,
+    selector: ".react-results--main li a[data-testid=result-title-a]",
+  },
+  {
+    name: SERP_CONFIG_NAMES.yandex,
+    domain: "yandex.",
+    rx: /^http(?:s)?:\/\/(?:www\.)?yandex\..+/,
+    selector: ".serp-item a:has(h2)",
+    position: "after",
   },
 ]
