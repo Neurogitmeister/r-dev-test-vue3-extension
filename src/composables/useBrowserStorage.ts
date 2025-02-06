@@ -2,41 +2,44 @@ import { ref, watch, nextTick } from "vue"
 import { ILocalStorage, ISyncStorage } from "@/utils/storage"
 
 function isObject(value: unknown): boolean {
-  return value !== null && value instanceof Object && !Array.isArray(value)
+  return value instanceof Object && !Array.isArray(value)
 }
 
-function checkType(defaultValue: unknown, value: unknown): boolean {
+function checkSameType(defaultValue: unknown, value: unknown): boolean {
   // Check if the value type is the same type as the default value or null
   // there are only strings, booleans, nulls and arrays as types left
   return (
-    (typeof value === typeof defaultValue &&
-      Array.isArray(value) == Array.isArray(defaultValue)) ||
-    value === null
+    typeof value === typeof defaultValue &&
+    Array.isArray(value) == Array.isArray(defaultValue)
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function mergeDeep(defaults: any, source: any): any {
-  // Merge the default options with the stored options
-  const output = { ...defaults } // Start with defaults
+function mergeDefaults(
+  defaults: unknown,
+  source: unknown,
+): typeof defaults & typeof source {
+  type Obj = Record<string, unknown>
 
-  Object.keys(defaults).forEach((key) => {
-    const defaultValue = defaults[key]
-    const sourceValue = source?.[key]
-
-    if (isObject(defaultValue) && sourceValue != null) {
-      // Recursively merge nested objects
-      output[key] = mergeDeep(defaultValue, sourceValue)
-    } else if (checkType(defaultValue, sourceValue)) {
-      output[key] = sourceValue
-    } else {
-      // If the type is different, use the default value
-      output[key] = defaultValue
-      console.info("Type mismatch", key, sourceValue)
-    }
-  })
-
-  return output
+  if (isObject(defaults) && isObject(source)) {
+    const output = { ...(defaults as Obj) }
+    Object.keys({
+      ...(defaults as Obj),
+      ...(source as Obj),
+    }).forEach((key) => {
+      const defaultValue = (defaults as Obj)[key]
+      const sourceValue = (source as Obj)[key]
+      if (defaultValue === undefined) {
+        output[key] = sourceValue
+      } else {
+        output[key] = mergeDefaults(defaultValue, sourceValue)
+      }
+    })
+    return output
+  } else if (checkSameType(defaults, source)) {
+    return source
+  } else {
+    return defaults || source
+  }
 }
 
 function useBrowserStorage<
@@ -56,13 +59,16 @@ function useBrowserStorage<
   // Initialize storage with the value from chrome.storage
   const promise = new Promise((resolve) => {
     chrome.storage[storageType].get(key, async (result) => {
-      if (result?.[key] !== undefined) {
+      const value = result?.[key]
+      if (value !== undefined) {
         if (!defaultValue) {
-          data.value = result[key]
-        } else if (isObject(defaultValue) && isObject(result[key])) {
-          data.value = mergeDeep(defaultValue, result[key])
-        } else if (checkType(defaultValue, result[key])) {
-          data.value = result[key]
+          data.value = value
+        } else if (isObject(defaultValue) && isObject(value)) {
+          data.value = mergeDefaults(defaultValue, value)
+        } else if (checkSameType(defaultValue, value)) {
+          data.value = value
+        } else {
+          data.value = defaultValue
         }
       }
       await nextTick()
@@ -76,7 +82,7 @@ function useBrowserStorage<
     data,
     (newValue) => {
       if (!isUpdatingFromStorage) {
-        if (checkType(defaultValue, newValue)) {
+        if (!defaultValue || checkSameType(defaultValue, newValue)) {
           chrome.storage[storageType].set({ [key]: toRaw(newValue) })
         } else {
           console.error("not updating " + key + ": type mismatch")
@@ -90,7 +96,10 @@ function useBrowserStorage<
     if (changes?.[key]) {
       isUpdatingFromStorage = true
       const { oldValue, newValue } = changes[key]
-      data.value = newValue
+      data.value =
+        newValue === undefined || newValue === null
+          ? newValue || defaultValue
+          : newValue
       await nextTick()
       isUpdatingFromStorage = false
     }

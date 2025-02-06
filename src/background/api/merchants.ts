@@ -35,10 +35,10 @@ const setAll = async (merchants: Merchant[]) => {
     return
   }
 
-  const remappedStates: MerchantStatesMap = new Map()
+  const remappedStates: MerchantStatesMap = {}
   merchants.forEach((m) => {
-    const state = states?.get(m.domain)
-    if (state) remappedStates.set(m.domain, state)
+    const state = states[m.domain]
+    if (state) remappedStates[m.domain] = state
   })
   await storage.local.set({
     merchantsStorageState: "ready",

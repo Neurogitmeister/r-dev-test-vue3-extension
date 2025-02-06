@@ -1,28 +1,33 @@
 import { MerchantState } from "@/utils/storage"
 
 export const useMerchantsStore = defineStore("merchants", () => {
-  const { data: merchants } = useBrowserLocalStorage("merchants")
+  const { data: merchants } = useBrowserLocalStorage("merchants", [])
 
   const { data: merchantStatesMap } = useBrowserLocalStorage(
     "merchantStatesMap",
-    new Map(),
+    {},
   )
 
   const { data: merchantsStorageState } = useBrowserLocalStorage(
     "merchantsStorageState",
   )
 
-  const setMerchantState = (domain: string, state: MerchantState) => {
-    merchantStatesMap.value.set(domain, state)
+  const getMerchantState = (merchant: Merchant) =>
+    merchantStatesMap.value[merchant.domain] || {}
+
+  const setMerchantState = (merchant: Merchant, state: MerchantState) => {
+    merchantStatesMap.value[merchant?.domain] = state
   }
 
-  const updateMerchantState = (domain: string, state: MerchantState) => {
-    const oldState = merchantStatesMap.value.get(domain)
-    merchantStatesMap.value.set(domain, { ...oldState, ...state })
+  const updateMerchantState = (merchant: Merchant, state: MerchantState) => {
+    const oldState = merchantStatesMap.value[merchant.domain] || {}
+    merchantStatesMap.value[merchant.domain] = { ...oldState, ...state }
   }
 
   const getMerchantByUrl = (url: string) => {
-    return merchants.value?.find((m) => url.includes("." + m.domain))
+    return merchants.value?.find((merchant) =>
+      url.includes("." + merchant.domain),
+    )
   }
 
   const isMerchantSerpDisabled = (merchant: Merchant) => {
@@ -31,6 +36,7 @@ export const useMerchantsStore = defineStore("merchants", () => {
 
   return {
     merchants,
+    getMerchantState,
     setMerchantState,
     updateMerchantState,
     getMerchantByUrl,

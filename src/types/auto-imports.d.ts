@@ -77,6 +77,7 @@ declare global {
   const mapStores: typeof import('pinia')['mapStores']
   const mapWritableState: typeof import('pinia')['mapWritableState']
   const markRaw: typeof import('vue')['markRaw']
+  const mergeDefaults: typeof import('../composables/useBrowserStorage')['mergeDefaults']
   const middleware: typeof import('../utils/router/middleware')['middleware']
   const migrateStorage: typeof import('../utils/storage/migration')['migrateStorage']
   const nextTick: typeof import('vue')['nextTick']

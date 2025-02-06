@@ -2,17 +2,30 @@
 const img = chrome.runtime.getURL("src/assets/logo.png")
 
 const url = inject<ComputedRef<string>>("url")
-const { getMerchantByUrl } = useMerchantsStore()
-const merchant = computed(() => (url ? getMerchantByUrl(url.value) : undefined))
+const { getMerchantByUrl, getMerchantState, updateMerchantState } =
+  useMerchantsStore()
+const merchant = computed(() =>
+  url?.value ? getMerchantByUrl(url?.value) : undefined,
+)
+const state = computed(() =>
+  merchant.value ? getMerchantState(merchant.value) : undefined,
+)
 </script>
 
 <template>
   <div
-    v-if="!!merchant"
+    v-if="!!merchant && !state?.hideNotification"
     class="notifier"
   >
     <img :src="img" />
     {{ `Hello from notifier, ${merchant.domain}!` }}
+
+    <button
+      class="btn-close"
+      @click="updateMerchantState(merchant, { hideNotification: true })"
+    >
+      <i-ph-plus class="icon-cross" />
+    </button>
   </div>
 </template>
 
@@ -29,12 +42,40 @@ const merchant = computed(() => (url ? getMerchantByUrl(url.value) : undefined))
   background: white;
   color: black;
   padding: 20px;
+  padding-right: 40px;
   display: flex;
   align-items: center;
+
   img {
     height: 16px;
     width: 16px;
     margin-right: 8px;
+  }
+
+  .icon-cross {
+    transform: rotate(45deg);
+    height: 20px;
+    width: 20px;
+    color: white;
+  }
+
+  .btn-close {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+    border-radius: 4px;
+    background-color: #b93b3b;
+    cursor: pointer;
+    border: none;
+    outline: none;
+
+    &:hover {
+      opacity: 0.85;
+    }
   }
 }
 </style>

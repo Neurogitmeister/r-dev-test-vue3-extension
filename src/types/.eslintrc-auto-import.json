@@ -387,6 +387,7 @@
     "useMerchantsStore": true,
     "getSessionStorageStatus": true,
     "MerchantStatesMap": true,
-    "useUrlObserver": true
+    "useUrlObserver": true,
+    "mergeDefaults": true
   }
 }

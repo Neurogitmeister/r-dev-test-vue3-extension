@@ -7,11 +7,11 @@ interface Merchant {
 }
 
 interface MerchantState {
-  showNotification?: boolean
+  hideNotification?: boolean
   clicksCount?: number
 }
 
-type MerchantStatesMap = Map<Merchant["domain"], MerchantState>
+type MerchantStatesMap = Record<string, MerchantState>
 
 interface ILocalStorage {
   merchants?: Merchant[]
