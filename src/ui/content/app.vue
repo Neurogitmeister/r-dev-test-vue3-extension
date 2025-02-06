@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import Serp from "./serp/serp.vue"
+
 const { url, stopUrlObserver } = useUrlObserver()
 
 provide("url", url)
 </script>
 
-<template>Hello from content script</template>
+<template>
+  <Serp />
+</template>
