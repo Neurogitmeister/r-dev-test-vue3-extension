@@ -8,6 +8,7 @@ interface Merchant {
 
 interface MerchantState {
   hideNotification?: boolean
+  notificationsCount?: number
   clicksCount?: number
 }
 

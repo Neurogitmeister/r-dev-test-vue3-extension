@@ -10,6 +10,7 @@ export const useMerchantsStore = defineStore("merchants", () => {
 
   const { data: merchantsStorageState } = useBrowserLocalStorage(
     "merchantsStorageState",
+    "loading",
   )
 
   const getMerchantState = (merchant: Merchant) =>
@@ -36,6 +37,7 @@ export const useMerchantsStore = defineStore("merchants", () => {
 
   return {
     merchants,
+    merchantsStorageState,
     getMerchantState,
     setMerchantState,
     updateMerchantState,

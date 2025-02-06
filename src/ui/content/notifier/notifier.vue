@@ -2,14 +2,38 @@
 const img = chrome.runtime.getURL("src/assets/logo.png")
 
 const url = inject<ComputedRef<string>>("url")
+const merchantsStore = useMerchantsStore()
 const { getMerchantByUrl, getMerchantState, updateMerchantState } =
-  useMerchantsStore()
+  merchantsStore
+const { merchantsStorageState } = storeToRefs(merchantsStore)
 const merchant = computed(() =>
-  url?.value ? getMerchantByUrl(url?.value) : undefined,
+  url?.value ? getMerchantByUrl(url.value) : undefined,
 )
 const state = computed(() =>
-  merchant.value ? getMerchantState(merchant.value) : undefined,
+  merchant.value ? getMerchantState(merchant.value) : null,
 )
+const notified = ref(false)
+
+const hideNotification = () => {
+  updateMerchantState(merchant.value!, {
+    notificationsCount: 0,
+    hideNotification: true,
+  })
+}
+
+watchEffect(() => {
+  if (!merchant.value || merchantsStorageState.value !== "ready") return
+  if (state.value !== undefined && state.value?.hideNotification) return
+  if (notified.value) return
+
+  const count = state.value?.notificationsCount || 0
+  if (count >= 3) {
+    hideNotification()
+  } else {
+    updateMerchantState(merchant.value, { notificationsCount: count + 1 })
+    notified.value = true
+  }
+})
 </script>
 
 <template>
@@ -22,7 +46,7 @@ const state = computed(() =>
 
     <button
       class="btn-close"
-      @click="updateMerchantState(merchant, { hideNotification: true })"
+      @click="hideNotification"
     >
       <i-ph-plus class="icon-cross" />
     </button>
