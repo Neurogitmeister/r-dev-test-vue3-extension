@@ -57,7 +57,9 @@ function useBrowserStorage<
   const promise = new Promise((resolve) => {
     chrome.storage[storageType].get(key, async (result) => {
       if (result?.[key] !== undefined) {
-        if (isObject(defaultValue) && isObject(result[key])) {
+        if (!defaultValue) {
+          data.value = result[key]
+        } else if (isObject(defaultValue) && isObject(result[key])) {
           data.value = mergeDeep(defaultValue, result[key])
         } else if (checkType(defaultValue, result[key])) {
           data.value = result[key]
