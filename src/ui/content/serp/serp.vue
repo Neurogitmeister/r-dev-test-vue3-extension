@@ -47,7 +47,7 @@ interface SERPInjection {
   style?: string
 }
 
-function getInjections(config: ISerpConfig, merchants: Merchant[]) {
+function getInjections(config: ISerpConfig) {
   const items = document.querySelectorAll(config.selector)
   items.forEach((item) => {
     const isProcessed = item.getAttribute("serp-processed") == "1"
@@ -86,7 +86,7 @@ function getInjections(config: ISerpConfig, merchants: Merchant[]) {
 
 const url = inject<ComputedRef<string>>("url")
 const injections = ref<SERPInjection[]>([])
-const timer = ref()
+const observer = ref<MutationObserver>()
 const merchantsStore = useMerchantsStore()
 const { getMerchantByUrl, isMerchantSerpDisabled } = merchantsStore
 const { merchants } = storeToRefs(merchantsStore)
@@ -95,29 +95,20 @@ const serpConfig = computed(
   () => url?.value && getSerpConfig(serpConfigs, url.value),
 )
 
-const startSearch = () => {
-  const search = () => {
-    if (!serpConfig.value || !merchants.value) return
-    getInjections(serpConfig.value, merchants.value)
-  }
-  search()
-  if (timer.value) clearInterval(timer.value)
-  timer.value = setInterval(search, 500)
+const search = () => {
+  if (!serpConfig.value || !merchants.value.length) return
+  getInjections(serpConfig.value)
 }
 
+watch(() => [serpConfig.value, merchants.value], search)
+
 onMounted(() => {
-  startSearch()
+  observer.value = new MutationObserver(search)
+  observer.value.observe(document, { subtree: true, childList: true })
 })
 
-watch(
-  () => serpConfig.value,
-  () => {
-    startSearch()
-  },
-)
-
 onUnmounted(() => {
-  if (timer.value) clearInterval(timer.value)
+  observer.value?.disconnect()
 })
 </script>
 
