@@ -74,7 +74,7 @@ function getInjections(config: ISerpConfig, merchants: Merchant[]) {
           href = match[1]
         }
       }
-      const merchant = getMerchantByUrl(href, merchants)
+      const merchant = getMerchantByUrl(href)
 
       if (merchant && !isMerchantSerpDisabled(merchant)) {
         const el = getMount(item, config)

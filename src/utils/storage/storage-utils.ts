@@ -115,6 +115,8 @@ const clearAllStorage = () =>
     chrome.storage.local.clear(),
     chrome.storage.sync.clear(),
     chrome.storage.session.clear(),
-  ])
+  ]).catch((e) => {
+    console.error(e)
+  })
 
 export { createStorage, clearAllStorage }
