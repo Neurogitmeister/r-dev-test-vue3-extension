@@ -1,7 +1,7 @@
 import { MerchantState } from "@/utils/storage"
 
 export const useMerchantsStore = defineStore("merchants", () => {
-  const { data: merchants } = useBrowserLocalStorage("merchants", [])
+  const { data: merchants } = useBrowserLocalStorage("merchants")
 
   const { data: merchantStatesMap } = useBrowserLocalStorage(
     "merchantStatesMap",
@@ -21,9 +21,19 @@ export const useMerchantsStore = defineStore("merchants", () => {
     merchantStatesMap.value.set(domain, { ...oldState, ...state })
   }
 
+  const getMerchantByUrl = (url: string, merchants: Merchant[]) => {
+    return merchants.find((m) => url.includes("." + m.domain))
+  }
+
+  const isMerchantSerpDisabled = (merchant: Merchant) => {
+    return false
+  }
+
   return {
     merchants,
     setMerchantState,
     updateMerchantState,
+    getMerchantByUrl,
+    isMerchantSerpDisabled,
   }
 })

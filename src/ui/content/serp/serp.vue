@@ -3,14 +3,6 @@ import { ISerpConfig, serpConfigs } from "./config"
 
 const img = chrome.runtime.getURL("/src/assets/logo.png")
 
-const findMerchantByDomain = (url: string, merchants: Merchant[]) => {
-  return merchants.find((m) => url.includes("." + m.domain))
-}
-
-const isSerpDisabled = (merchant: Merchant) => {
-  return false
-}
-
 const getSerpConfig = (configs: ISerpConfig[], href: string) =>
   configs.find(
     (config) =>
@@ -82,9 +74,9 @@ function getInjections(config: ISerpConfig, merchants: Merchant[]) {
           href = match[1]
         }
       }
-      const merchant = findMerchantByDomain(href, merchants)
+      const merchant = getMerchantByUrl(href, merchants)
 
-      if (merchant && !isSerpDisabled(merchant)) {
+      if (merchant && !isMerchantSerpDisabled(merchant)) {
         const el = getMount(item, config)
         if (el) {
           const injection = { href, merchant, el, style: config.style }
@@ -95,15 +87,16 @@ function getInjections(config: ISerpConfig, merchants: Merchant[]) {
   })
 }
 
-const injections = ref<SERPInjection[]>([])
 const url = inject<ComputedRef<string>>("url")
+const injections = ref<SERPInjection[]>([])
 const timer = ref()
+const merchantsStore = useMerchantsStore()
+const { getMerchantByUrl, isMerchantSerpDisabled } = merchantsStore
+const { merchants } = storeToRefs(merchantsStore)
 
 const serpConfig = computed(
   () => url?.value && getSerpConfig(serpConfigs, url.value),
 )
-
-const { data: merchants } = useBrowserLocalStorage("merchants")
 
 const startSearch = () => {
   const search = () => {
