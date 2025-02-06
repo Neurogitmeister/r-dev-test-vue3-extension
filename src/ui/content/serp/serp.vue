@@ -4,10 +4,7 @@ import { ISerpConfig, serpConfigs } from "./config"
 const img = chrome.runtime.getURL("/src/assets/logo.png")
 
 const getSerpConfig = (configs: ISerpConfig[], href: string) =>
-  configs.find(
-    (config) =>
-      href.includes(config.domain) && new RegExp(config.rx).test(href),
-  )
+  configs.find((config) => new RegExp(config.rx).test(href))
 
 const getMount = (linkNode: Element, config: ISerpConfig) => {
   const element = linkNode.querySelector("br")
