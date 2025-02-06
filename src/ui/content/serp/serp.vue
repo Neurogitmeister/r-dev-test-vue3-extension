@@ -4,7 +4,7 @@ import { ISerpConfig, serpConfigs } from "./config"
 const img = chrome.runtime.getURL("/src/assets/logo.png")
 
 const findMerchantByDomain = (url: string, merchants: Merchant[]) => {
-  return merchants.find((m) => url.includes(m.domain))
+  return merchants.find((m) => url.includes("." + m.domain))
 }
 
 const isSerpDisabled = (merchant: Merchant) => {
