@@ -23,31 +23,37 @@ onMounted(() => {
 </script>
 
 <template>
-  <template v-if="merchantsStorageState === 'loading'">
-    <LoadingSpinner :loading="merchantsStorageState === 'loading'" />
-  </template>
-  <template v-else-if="merchantsStorageState === 'ready'">
-    <template v-if="merchant">
-      <!-- store popup -->
-      <CurrentStoreInfo
-        :merchant="merchant"
-        :state="state"
-      />
+  <div class="popup">
+    <template v-if="merchantsStorageState === 'loading'">
+      <LoadingSpinner :loading="merchantsStorageState === 'loading'" />
     </template>
-    <template v-else>
-      <!-- default popup -->
-      <RouterLink
-        to="/action-popup/all-pages"
-        class="btn btn-primary"
-      >
-        Pages
-      </RouterLink>
-      <StoresList />
+    <template v-else-if="merchantsStorageState === 'ready'">
+      <template v-if="merchant">
+        <!-- store popup -->
+        <div class="popup__container">
+          <CurrentStoreInfo
+            :merchant="merchant"
+            :state="state"
+          />
+        </div>
+      </template>
+      <template v-else>
+        <!-- default popup -->
+        <div class="popup__container">
+          <StoresList />
+        </div>
+      </template>
     </template>
-  </template>
-  <template v-else-if="merchantsStorageState === 'error'">
-    <span>Error loading store info :(</span>
-  </template>
+    <template v-else-if="merchantsStorageState === 'error'">
+      <span>Error loading store info :(</span>
+    </template>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.popup {
+  &__container {
+    padding: 20px 40px;
+  }
+}
+</style>

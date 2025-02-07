@@ -9,18 +9,19 @@ defineProps<{
   <div class="merchant-info">
     <p>{{ merchant.domain }}</p>
     <p>{{ merchant.text }}</p>
+    <p class="state-header">State:</p>
     <table>
       <tbody>
         <tr>
-          <th>Clicked:</th>
+          <td>Clicked:</td>
           <td>{{ state?.clicksCount || 0 }} times</td>
         </tr>
         <tr>
-          <th>Notified:</th>
+          <td>Notified:</td>
           <td>{{ state?.notificationsCount || 0 }} times</td>
         </tr>
         <tr>
-          <th>Disabled notification:</th>
+          <td>Disabled notification:</td>
           <td>{{ state?.hideNotification ? "true" : "false" }}</td>
         </tr>
       </tbody>
@@ -33,5 +34,9 @@ defineProps<{
   text-align: start;
   display: flex;
   flex-direction: column;
+}
+.state-header {
+  margin-top: 16px;
+  margin-bottom: 4px;
 }
 </style>
