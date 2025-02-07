@@ -56,6 +56,8 @@ declare global {
   const getActivePinia: typeof import('pinia')['getActivePinia']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
+  const getCurrentTab: typeof import('../utils/tabs')['getCurrentTab']
+  const getCurrentTabUrl: typeof import('../utils/tabs')['getCurrentTabUrl']
   const getCustomerPortalLink: typeof import('../utils/firebase')['getCustomerPortalLink']
   const getProductsAndPrices: typeof import('../utils/firebase')['getProductsAndPrices']
   const getSessionStorageStatus: typeof import('../utils/storage/storage-utils')['getSessionStorageStatus']
@@ -423,6 +425,8 @@ declare module 'vue' {
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getCurrentTab: UnwrapRef<typeof import('../utils/tabs')['getCurrentTab']>
+    readonly getCurrentTabUrl: UnwrapRef<typeof import('../utils/tabs')['getCurrentTabUrl']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly i18n: UnwrapRef<typeof import('../utils/i18n')['i18n']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
@@ -672,7 +676,6 @@ declare module 'vue' {
     readonly useToString: UnwrapRef<typeof import('@vueuse/core')['useToString']>
     readonly useToggle: UnwrapRef<typeof import('@vueuse/core')['useToggle']>
     readonly useTransition: UnwrapRef<typeof import('@vueuse/core')['useTransition']>
-    readonly useUrlObserver: UnwrapRef<typeof import('../composables/useUrlObserver')['useUrlObserver']>
     readonly useUrlSearchParams: UnwrapRef<typeof import('@vueuse/core')['useUrlSearchParams']>
     readonly useUserMedia: UnwrapRef<typeof import('@vueuse/core')['useUserMedia']>
     readonly useVModel: UnwrapRef<typeof import('@vueuse/core')['useVModel']>

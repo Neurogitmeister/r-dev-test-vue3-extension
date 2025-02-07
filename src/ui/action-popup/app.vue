@@ -1,5 +1,18 @@
 <script setup lang="ts">
 import { Notivue, Notification } from "notivue"
+
+const url = ref<string>()
+
+onMounted(() => {
+  getCurrentTabUrl().then((currUrl) => {
+    url.value = currUrl
+  })
+})
+
+provide(
+  "url",
+  computed(() => url.value),
+)
 </script>
 
 <template>

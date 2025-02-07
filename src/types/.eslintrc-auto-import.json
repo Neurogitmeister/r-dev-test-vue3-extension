@@ -388,6 +388,8 @@
     "getSessionStorageStatus": true,
     "MerchantStatesMap": true,
     "useUrlObserver": true,
-    "mergeDefaults": true
+    "mergeDefaults": true,
+    "getCurrentTab": true,
+    "getCurrentTabUrl": true
   }
 }
