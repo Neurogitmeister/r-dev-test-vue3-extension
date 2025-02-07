@@ -13,6 +13,7 @@ const openMerchantTab = () => {
     active: true,
     url,
   })
+  window.close()
 }
 </script>
 
