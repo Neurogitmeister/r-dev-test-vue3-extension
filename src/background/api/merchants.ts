@@ -75,8 +75,13 @@ const init = async () => {
 
   // clear states at session end
   if (!(await storage.session.get("healthStatus"))) {
-    console.info("session ended, clearing merchant states...")
-    await storage.local.remove("merchantStatesMap")
+    console.info("session ended, restore notification...")
+    const states = await storage.local.get("merchantStatesMap")
+    if (!states) return
+    Object.values(states).forEach((state) => {
+      state.hideNotification = false
+    })
+    await storage.local.set({ merchantStatesMap: states })
   }
 }
 
