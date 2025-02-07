@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UrlObserver } from "@/content-script/urlObserver"
+import { UrlObserver } from "@/utils/urlObserver"
 import Notifier from "./notifier/notifier.vue"
 import Serp from "./serp/serp.vue"
 

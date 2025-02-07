@@ -6,15 +6,10 @@ import { includeIgnoreFile } from "@eslint/compat"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import AutoImportGlobals from "./src/types/.eslintrc-auto-import.json" with { type: "json" }
-import { defineViteConfig as viteDefineVariable } from "./define.config.mjs"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const gitignorePath = path.resolve(__dirname, ".gitignore")
-const viteDefineGlobals = Object.keys(viteDefineVariable).reduce((acc, key) => {
-  acc[key] = "readonly"
-  return acc
-}, {})
 
 export default [
   includeIgnoreFile(gitignorePath),
@@ -42,7 +37,6 @@ export default [
         ...globals.worker,
         ...globals.webextensions,
         ...AutoImportGlobals.globals,
-        ...viteDefineGlobals,
       },
     },
   },

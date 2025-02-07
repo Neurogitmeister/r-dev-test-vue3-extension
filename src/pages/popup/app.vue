@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import CurrentStoreInfo from "../components/CurrentStoreInfo.vue"
-import StoresList from "../components/StoresList.vue"
+import CurrentStoreInfo from "./components/CurrentStoreInfo.vue"
+import StoresList from "./components/StoresList.vue"
 
 const merchantsStore = useMerchantsStore()
 const { getMerchantByUrl, getMerchantState } = merchantsStore
 const { merchantsStorageState } = storeToRefs(merchantsStore)
-
-const url = inject<ComputedRef<string>>("url")
 
 const merchant = computed(() =>
   url?.value ? getMerchantByUrl(url.value) : undefined,
@@ -14,6 +12,14 @@ const merchant = computed(() =>
 const state = computed(() =>
   merchant.value ? getMerchantState(merchant.value) : undefined,
 )
+
+const url = ref<string>()
+
+onMounted(() => {
+  getCurrentTabUrl().then((currUrl) => {
+    url.value = currUrl
+  })
+})
 </script>
 
 <template>
@@ -43,3 +49,5 @@ const state = computed(() =>
     <span>Error loading store info :(</span>
   </template>
 </template>
+
+<style scoped></style>

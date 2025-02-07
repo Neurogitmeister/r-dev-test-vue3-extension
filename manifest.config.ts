@@ -12,7 +12,7 @@ const [major, minor, patch, label = "0"] = version
 
 export default {
   author: {
-    email: "mubaidr@gmail.com",
+    email: "",
   },
   name: env.mode === "staging" ? `[INTERNAL] ${name}` : displayName || name,
   description,
@@ -23,28 +23,23 @@ export default {
   manifest_version: 3,
   // key: '',
   action: {
-    default_popup: "src/ui/action-popup/index.html",
+    default_popup: "src/pages/popup/index.html",
   },
   background: {
-    service_worker: "src/background/index.ts",
+    service_worker: "src/pages/background/index.ts",
     type: "module",
   },
   content_scripts: [
     {
       all_frames: false,
-      js: ["src/content-script/index.ts"],
+      js: ["src/pages/content/index.ts"],
       matches: ["*://*/*"],
       run_at: "document_end",
     },
   ],
-  side_panel: {
-    default_path: "src/ui/side-panel/index.html",
-  },
-  devtools_page: "src/devtools/index.html",
-  options_page: "src/ui/options-page/index.html",
   offline_enabled: true,
   host_permissions: [],
-  permissions: ["storage", "tabs", "background", "sidePanel", "alarms"],
+  permissions: ["storage", "tabs", "background", "alarms"],
   web_accessible_resources: [
     {
       resources: ["src/assets/*.**"],

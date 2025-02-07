@@ -6,31 +6,11 @@ import IconsResolver from "unplugin-icons/resolver"
 import Icons from "unplugin-icons/vite"
 import Components from "unplugin-vue-components/vite"
 import { createHtmlPlugin } from "vite-plugin-html"
-import VueRouter from "unplugin-vue-router/vite"
 import { defineConfig } from "vite"
-// @ts-expect-error commonjs module
-import { defineViteConfig as define } from "./define.config.mjs"
-import vueDevTools from "vite-plugin-vue-devtools"
-import TurboConsole from "unplugin-turbo-console/vite"
-import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite"
 import { dirname, relative, resolve } from "node:path"
 import "dotenv/config"
 
 const PORT = Number(process.env.PORT || "") || 3303
-
-function getImmediateDirectories(dirPath: string): string[] {
-  try {
-    // Read the directory contents synchronously
-    const items = fs.readdirSync(dirPath, { withFileTypes: true })
-
-    // Filter and map to get only directory names
-    return items
-      .filter((item): item is fs.Dirent => item.isDirectory()) // Type guard
-      .map((item) => item.name)
-  } catch (err) {
-    throw new Error(`Error reading directories: ${(err as Error).message}`)
-  }
-}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -50,7 +30,7 @@ export default defineConfig({
         // additionalData: `@use "/src/assets/base.scss";`,
         additionalData: (content, filePath) => {
           // do not include base.scss (tailwind etc) in content-script iframe as it will be affect main page styles
-          if (filePath.includes("src/ui/content")) {
+          if (filePath.includes("src/pages/content")) {
             return content
           }
 
@@ -61,33 +41,7 @@ export default defineConfig({
   },
 
   plugins: [
-    VueI18nPlugin({
-      include: resolve(
-        dirname(fileURLToPath(import.meta.url)),
-        "./src/locales/**",
-      ),
-      globalSFCScope: true,
-      compositionOnly: true,
-    }),
-
-    vueDevTools(),
-
-    // https://github.com/posva/unplugin-vue-router
-    VueRouter({
-      dts: "src/types/typed-router.d.ts",
-      routesFolder: getImmediateDirectories("src/ui").map((dir) => {
-        return {
-          src: `src/ui/${dir}/pages`,
-          path: `${dir}/`,
-        }
-      }),
-    }),
-
     vue(),
-
-    // imagemin({}),
-
-    TurboConsole(),
 
     // https://github.com/unplugin/unplugin-auto-import
     AutoImport({
@@ -96,12 +50,6 @@ export default defineConfig({
         "vue-router",
         "@vueuse/core",
         "pinia",
-        {
-          "vue-router/auto": ["definePage"],
-        },
-        {
-          "vue-i18n": ["useI18n", "t"],
-        },
         {
           "webextension-polyfill": [["*", "browser"]],
         },
@@ -152,12 +100,6 @@ export default defineConfig({
         return html.replace(/"\/assets\//g, `"${assetsPath}/`)
       },
     },
-
-    createHtmlPlugin({
-      inject: {
-        data: define, // Inject all key-value pairs from defineViteConfig
-      },
-    }),
   ],
 
   build: {
@@ -165,13 +107,6 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: false,
     write: true,
-    rollupOptions: {
-      // ui or pages that are not specified in manifest file need to be specified here
-      input: {
-        setup: "src/ui/setup/index.html",
-        devtoolsPanel: "src/ui/devtools-panel/index.html",
-      },
-    },
   },
 
   server: {
@@ -190,6 +125,4 @@ export default defineConfig({
     include: ["vue", "@vueuse/core", "webextension-polyfill"],
     exclude: ["vue-demi"],
   },
-
-  define,
 })

@@ -390,6 +390,7 @@
     "useUrlObserver": true,
     "mergeDefaults": true,
     "getCurrentTab": true,
-    "getCurrentTabUrl": true
+    "getCurrentTabUrl": true,
+    "UrlObserver": true
   }
 }
