@@ -25,11 +25,12 @@ export const useMerchantsStore = defineStore("merchants", () => {
     merchantStatesMap.value[merchant.domain] = { ...oldState, ...state }
   }
 
-  const getMerchantByUrl = (url: string) => {
-    return merchants.value?.find((merchant) =>
-      url.includes("." + merchant.domain),
+  const getMerchantByUrl = (url: string) =>
+    merchants.value?.find(
+      (merchant) =>
+        url.includes("." + merchant.domain) ||
+        url.includes("//" + merchant.domain),
     )
-  }
 
   const isMerchantSerpDisabled = (merchant: Merchant) => {
     return false
