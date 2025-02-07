@@ -11,15 +11,11 @@ const [major, minor, patch, label = "0"] = version
   .split(/[.-]/)
 
 export default {
-  author: {
-    email: "",
-  },
   name: env.mode === "staging" ? `[INTERNAL] ${name}` : displayName || name,
   description,
   // up to four numbers separated by dots
   version: `${major}.${minor}.${patch}.${label}`,
   // semver is OK in "version_name"
-  version_name: version,
   manifest_version: 3,
   // key: '',
   action: {
@@ -37,7 +33,6 @@ export default {
       run_at: "document_end",
     },
   ],
-  offline_enabled: true,
   host_permissions: [],
   permissions: ["storage", "tabs", "background", "alarms"],
   web_accessible_resources: [
