@@ -1,8 +1,22 @@
 <script setup lang="ts">
+import { UrlObserver } from "@/content-script/urlObserver"
 import Notifier from "./notifier/notifier.vue"
 import Serp from "./serp/serp.vue"
 
-const { url, stopUrlObserver } = useUrlObserver()
+const url = ref<string>(window.location.href)
+const observer = ref<UrlObserver>()
+
+onMounted(() => {
+  observer.value = new UrlObserver((newUrl) => {
+    url.value = newUrl || ""
+  })
+})
+
+onUnmounted(() => {
+  if (observer.value) {
+    observer.value.disconnect()
+  }
+})
 
 provide("url", url)
 </script>
