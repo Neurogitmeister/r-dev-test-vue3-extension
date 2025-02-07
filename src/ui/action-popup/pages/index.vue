@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CurrentStoreInfo from "../components/CurrentStoreInfo.vue"
+import StoresList from "../components/StoresList.vue"
 
 const merchantsStore = useMerchantsStore()
 const { getMerchantByUrl, getMerchantState } = merchantsStore
