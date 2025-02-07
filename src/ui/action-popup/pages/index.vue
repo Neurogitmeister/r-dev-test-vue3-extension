@@ -11,7 +11,7 @@ const merchant = computed(() =>
   url?.value ? getMerchantByUrl(url.value) : undefined,
 )
 const state = computed(() =>
-  merchant.value ? getMerchantState(merchant.value) : null,
+  merchant.value ? getMerchantState(merchant.value) : undefined,
 )
 </script>
 
@@ -22,7 +22,10 @@ const state = computed(() =>
   <template v-else-if="merchantsStorageState === 'ready'">
     <template v-if="merchant">
       <!-- store popup -->
-      <CurrentStoreInfo :merchant="merchant" />
+      <CurrentStoreInfo
+        :merchant="merchant"
+        :state="state"
+      />
     </template>
     <template v-else>
       <!-- default popup -->
